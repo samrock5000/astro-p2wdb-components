@@ -1,0 +1,45 @@
+---
+// Component Imports
+import WriteToP2wdb from "../components/WriteToP2wdb.svelte";
+import Site from '../layout/Site.astro'
+// Full Astro Component Syntax:
+// https://docs.astro.build/core-concepts/astro-components/
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<style>
+			html,
+			body {
+				font-family: system-ui;
+				margin: 0;
+			}
+			body {
+				padding: 2rem;
+			}
+			h1 {
+	
+				font-size: 4rem;
+				font-weight: 100;
+				line-height: 1.1;
+				margin: 2rem auto;
+				max-width: 14rem;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<main>
+			<Site>
+				<h1>Hello, P2WDB!</h1>
+				<!-- <ReadP2wdb client:visible /> -->
+				<WriteToP2wdb client:visible />
+			</Site>
+		
+		</main>
+	</body>
+</html>
