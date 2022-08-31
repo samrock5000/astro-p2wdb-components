@@ -1,56 +1,86 @@
 <script lang="ts">
-    import { Read, Write } from "p2wdb";
+  import { Read } from "p2wdb";
 
-    const read = new Read();
-    let res;
-    let usrData = '';
-    
-   
+  const read = new Read();
+  let res;
+  let usrData:string;
+  let latestEntry: number;
+//   let txid; //="acace5dd0aa7590e101c7db1f58abdbfb417f2b2c16f35486ece11467bad0c6a"
+  let result;
 
-    const getData = async () => {
-        // Get the second page of results.
-        // const results = await read.getPage(2);
+  const getData = async (txidOrHash: string) => {
+    try {
+      // Get the second page of results.
+      // const results = await read.getPage(2);
+      txidOrHash.length === 64
+        ? (result = await read.getByTxid(txidOrHash))
+        : (result = await read.getByHash(txidOrHash));
 
-        // Get the latest 20 entries in the database.
-        const result = await read.getPage(); // default: page = 0
-        res = result;
-        console.log(res);
-    };
- 
-
+      // Get the latest 20 entries in the database.
+      // const result = await read.getPage(latestEntry); // default: page = 0
+      res = [result];
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 </script>
+
 <div class="btn">
-    <button  on:click={getData}>Get Hashes</button>
+  <input bind:value={usrData} placeholder="txid or hash" />
+  <button on:click={getData(usrData)}>submit </button>
 </div>
 
-
-{#if res != undefined}
-    {#await res}
-        <p>...waiting</p>
-    {:then items}
-    <div>
-        {#each items as item}
+<section class="features">
+  <div class="container">
+    {#if res != undefined}
+      {#await res}
+        <h3>...waiting</h3>
+      {:then items}
+        <div>
+          {#each items as item}
+            <h3>appID</h3>
+            <p>{item.appId}</p>
+            <!-- <p>created at {Unix_timestamp(item.createdAt)}</p> -->
+            <h3>Hash</h3>
             <p id="hash">{item.hash}</p>
-        {/each}
-    </div>
-    {:catch error}
+            <h3>Message</h3>
+            <p>{JSON.parse(item.value.data).data.data}</p>
+          {/each}
+        </div>
+      {:catch error}
         <p style="color: red">{error.message}</p>
-    {/await}
-{/if}
+      {/await}
+    {/if}
+  </div>
+</section>
 
 <style>
-    div {
-        text-align: center;
-        padding: 1em;
-        margin: 0 auto;
-    }
-    #hash {
-        font-family: 'Courier New', Courier, monospace;
-    }
- 
+  div.btn {
+    text-align: center;
+    padding: 0.1em;
+    margin: 0.1;
+  }
 
-    .btn {
-        justify-content: center;
-        
+  #hash {
+    font-family: "Courier New", Courier, monospace;
+    padding: 0.1em;
+  }
+  /*
+  .btn {
+    justify-content: center;
+  } */
+
+  .features .container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    padding: 0 10px;
+    margin: 10px auto;
+  }
+  @media (max-width: 500px) {
+    .features .container {
+      grid-template-columns: 1fr;
     }
+  }
 </style>

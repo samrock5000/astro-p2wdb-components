@@ -4,7 +4,8 @@
   let res;
   let usrData: string;
   let WIF: string;
-  const serverURL = "http://localhost:5667";
+//   const serverURL = "http://localhost:5667";
+  const serverURL = "https://p2wdb.fullstack.cash";
   // ENTER your WIF
   // const WIF = "...";
   async function writeNode(usrData: string, wif: string) {
@@ -24,7 +25,7 @@
 
       const result = await write.postEntry(data, appId);
 
-      res = result;
+      res = [result];
 
       console.log("Data about P2WDB write: ", result);
 
