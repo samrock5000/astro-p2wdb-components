@@ -1,3 +1,6 @@
+---
+import Header from '../components/Header.svelte'
+---
 <html>
   <head>
     <meta charset="utf-8">
@@ -5,12 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <nav>
-        <a href="http://localhost:3000/">/home</a>
-        <a href="http://localhost:3000/read">/read</a>
-  
-    </nav>
+
     <article>
+        <Header/>
       <slot /> <!-- your content is injected here -->
     </article>
   </body>
